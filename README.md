@@ -1,28 +1,5 @@
 # HESS LLM Evaluation Platform - Setup Instructions
 
-## Requirements
-
-### Python Dependencies (requirements.txt)
-
-```txt
-streamlit>=1.28.0
-pandas>=2.0.0
-numpy>=1.24.0
-plotly>=5.15.0
-python-dotenv>=1.0.0
-jinja2>=3.1.0
-openpyxl>=3.1.0
-
-# LLM API Libraries
-google-generativeai>=0.3.0
-openai>=1.0.0
-anthropic>=0.7.0
-
-# Optional: For enhanced data processing
-scikit-learn>=1.3.0
-scipy>=1.11.0
-```
-
 ### Environment Variables (.env file)
 
 Create a `.env` file in your project root:
