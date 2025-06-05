@@ -1,0 +1,31 @@
+Participant_no,LLM_model,Experiment_time_minutes,Execution_time_task1_seconds,Planner_steps_task1,Successfully_executed_steps_task1,User_feedback_task1,User_feedback_description_task1,Execution_time_task2_seconds,Planner_steps_task2,Successfully_executed_steps_task2,User_feedback_task2,User_feedback_description_task2,Execution_time_task3_seconds,Planner_steps_task3,Successfully_executed_steps_task3,User_feedback_task3,User_feedback_description_task3
+1,claude-3-5-sonnet-20241022,7.102502767,45.6,0,0,yes,"yes, gave all info right",185.2,6,4,yes,,180.1,5,3,yes,probably true
+3,claude-3-5-sonnet-20241022,7.983091683,45,0,0,yes,,215.2,4,3,mixed,some steps failed,201.6,4,3,yes,"Excellent analysis, very insightful."
+5,claude-3-5-sonnet-20241022,8.024135433,166.7,4,3,yes,,153.4,4,3,yes,,140.6,4,3,yes,
+7,claude-3-5-sonnet-20241022,6.251025881,46.3,0,0,yes,clear and complete specs,201.2,6,5,yes,,158.8,4,4,yes,analysis well balanced and visual
+9,claude-3-5-sonnet-20241022,7.14524242,55.9,0,0,mixed,The AI got some parts right but struggled with others.,184.5,5,4,yes,,170.1,7,6,yes,
+2,claude-3-opus-20240229,7.72315805,63.1,0,0,yes,,198.8,12,0,no,did not work,80.2,4,0,no,did not work
+4,claude-3-opus-20240229,4.670268417,86.4,4,0,no,not working.,132.2,10,0,no,not working,48.8,4,0,no,The response was not relevant to my question.
+6,claude-3-opus-20240229,7.88021484,68.4,0,0,yes,got correct details,178.6,9,7,yes,,97.9,7,6,yes,
+8,claude-3-opus-20240229,6.584226579,89.3,1,0,no,failed to load system info,145.4,9,4,no,did not evaluate anything properly,76.6,4,2,no,only showed partial output
+10,claude-3-opus-20240229,7.44274522,92.6,0,0,no,Rate Limit?,169.6,6,3,no,code did not execute,91.2,3,1,no,partial result shown
+1,gemini-1.5-flash,6.385989167,30.8,0,0,yes,,166.6,7,6,mixed,some steps were not performed properly,153.2,5,4,mixed,I had to try multiple times to get a useful result.
+3,gemini-1.5-flash,5.5547632,76.2,0,0,yes,,105.8,2,1,no,steps failed?,131.7,5,5,yes,
+5,gemini-1.5-flash,5.2606463,86,0,0,yes,got all right info,77.9,2,1,mixed,"good, could be better",139.3,5,5,mixed,graph could be better
+7,gemini-1.5-flash,4.78451059,82.1,0,0,mixed,partial output with some missing info,122.1,4,2,no,basic info only,89.4,5,4,yes,
+9,gemini-1.5-flash,5.451485874,90.2,0,0,yes,all specs were retrieved,108.5,6,6,yes,explained health info properly,117.4,4,4,yes,well explained usage trend
+2,gemini-1.5-pro,4.50954845,32.8,0,0,yes,,130.3,6,4,yes,probably true,68.5,2,2,yes,maybe true it says there are limitations
+4,gemini-1.5-pro,4.95286385,72.7,0,0,yes,,128.6,4,3,mixed,it was good,76.5,2,2,yes,gave good analysis
+6,gemini-1.5-pro,5.118808583,38.2,0,0,yes,gave accurate system specs,115.5,5,3,mixed,clear and detailed battery analysis,91.3,3,2,mixed,steps were mostly fine
+8,gemini-1.5-pro,5.36512358,61.9,0,0,yes,a little confusing but makes sense,134.6,5,4,yes,,109.1,7,7,yes,insightful breakdown
+10,gemini-1.5-pro,5.678976429,67.4,0,0,yes,gave all expected specs,143.2,6,5,yes,insightful health details,101.3,6,4,mixed,plots were missing
+1,gpt-3.5-turbo,4.858428933,46.6,0,0,no,Rate Limit?,86.7,4,4,yes,"good analysis, also prepared voltage graph",82.7,4,4,yes,good analysis
+3,gpt-3.5-turbo,4.50210515,71.4,0,0,yes,,77.8,4,4,yes,I think it is right?,104.7,4,4,yes,"yes, really good analysis"
+5,gpt-3.5-turbo,2.980438817,29.9,1,1,yes,good answer,52,1,1,mixed,could be better,88.7,4,4,yes,worked really well
+7,gpt-3.5-turbo,3.954158883,35.4,1,1,yes,all specs were mentioned correctly,67.3,5,4,yes,neat response with voltage trend,73.2,3,2,mixed,says low confidence but I think it is right
+9,gpt-3.5-turbo,4.242585221,29.7,1,1,yes,quick and correct info,54.3,4,4,yes,efficient answer,82.1,5,5,yes,good steps and clean result
+2,gpt-4-turbo,5.582871183,28.1,0,0,yes,,164.3,1,0,mixed,good battery check. could be better,117.5,4,1,no,some steps failed.
+4,gpt-4-turbo,4.964493983,44.2,0,0,yes,,121.3,1,0,yes,good battery check,127.7,4,2,mixed,no plot were generated
+6,gpt-4-turbo,6.302846355,50.6,0,0,yes,provided all specs correctly,144.2,1,1,no,only mentioned voltage info,112.5,5,5,yes,
+8,gpt-4-turbo,5.251066454,40.5,0,0,yes,,112,4,2,mixed,plotting error,106.7,6,5,yes,produced good visual summary
+10,gpt-4-turbo,5.814527852,33.1,0,0,yes,seems right,109.8,5,2,no,basic battery info only,123.7,5,5,yes,steps were well-defined
