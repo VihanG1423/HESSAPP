@@ -646,7 +646,7 @@ elif st.session_state.experiment_phase in ["ready", "completed"]:
         
         status_placeholder = st.empty()
         plot_placeholder = st.empty() 
-        chat_container = st.container(height=800)
+        chat_container = st.container()
 
         # Display plot from previous analysis (if any and in idle state)
         if st.session_state.current_step == 'idle' and st.session_state.current_ai_plot_data:
@@ -1047,10 +1047,11 @@ elif st.session_state.experiment_phase in ["ready", "completed"]:
                                 all_times.extend(times.tolist())
                         avg_time = np.mean(all_times) if all_times else 0
                         
-                        # Success rate (working code)
+                        # CORRECTED: Code success rate - ONLY for computational tasks (Tasks 2 & 3)
                         total_planned = 0
                         total_successful = 0
-                        for task in [1, 2, 3]:
+                        # Skip Task 1 - it's information retrieval, not computational
+                        for task in [2, 3]:  # Only Tasks 2 & 3 require code
                             planned_col = f'Planner_steps_task{task}'
                             success_col = f'Successfully_executed_steps_task{task}'
                             if planned_col in model_data.columns and success_col in model_data.columns:
@@ -1106,7 +1107,7 @@ elif st.session_state.experiment_phase in ["ready", "completed"]:
                         
                         # Simple comparison table
                         st.subheader("📊 Full Comparison")
-                        st.caption("Code Success = % of planned code steps that executed without errors")
+                        st.caption("Code Success = % of planned analysis steps (Tasks 2 & 3 only) that executed without errors")
                         display_df = results_df[['AI Model', 'Experiments', 'User Satisfaction', 'Avg Speed', 'Code Success']]
                         st.dataframe(display_df, use_container_width=True, hide_index=True)
                         
@@ -1140,9 +1141,9 @@ elif st.session_state.experiment_phase in ["ready", "completed"]:
                         st.dataframe(task_df, use_container_width=True, hide_index=True)
                         st.caption("Shows % of users satisfied with AI performance for each specific task")
                         
-                        # Task breakdown - Code Success
+                        # CORRECTED: Task breakdown - Code Success with proper interpretation
                         st.subheader("🎯 Code Success Rate by Task Type")
-                        st.caption("% of planned analysis steps that executed successfully for each task")
+                        st.caption("% of planned analysis steps that executed successfully (Tasks 2 & 3 require code; Task 1 is information retrieval)")
                         
                         code_success_results = []
                         for model in df_results['LLM_model'].unique():
@@ -1153,23 +1154,56 @@ elif st.session_state.experiment_phase in ["ready", "completed"]:
                                 planned_col = f'Planner_steps_task{i}'
                                 success_col = f'Successfully_executed_steps_task{i}'
                                 
-                                if planned_col in model_data.columns and success_col in model_data.columns:
-                                    total_planned = model_data[planned_col].fillna(0).sum()
-                                    total_successful = model_data[success_col].fillna(0).sum()
-                                    
-                                    if total_planned > 0:
-                                        success_rate = round((total_successful / total_planned) * 100, 1)
-                                        row[task_name] = f"{success_rate}%"
+                                if i == 1:  # Task 1 - Information Retrieval
+                                    # Check if model correctly identified no code needed
+                                    if planned_col in model_data.columns:
+                                        total_planned = model_data[planned_col].fillna(0).sum()
+                                        if total_planned == 0:
+                                            row[task_name] = "✅ Correct (No code needed)"
+                                        else:
+                                            # Model generated code unnecessarily - check if it worked
+                                            total_successful = model_data[success_col].fillna(0).sum() if success_col in model_data.columns else 0
+                                            if total_successful == total_planned and total_planned > 0:
+                                                row[task_name] = f"⚠️ Over-engineered ({int((total_successful/total_planned)*100)}% success)"
+                                            else:
+                                                row[task_name] = f"❌ Over-engineered & failed ({int((total_successful/total_planned)*100) if total_planned > 0 else 0}% success)"
                                     else:
                                         row[task_name] = "No data"
-                                else:
-                                    row[task_name] = "No data"
+                                
+                                else:  # Tasks 2 & 3 - Computational Analysis
+                                    if planned_col in model_data.columns and success_col in model_data.columns:
+                                        total_planned = model_data[planned_col].fillna(0).sum()
+                                        total_successful = model_data[success_col].fillna(0).sum()
+                                        
+                                        if total_planned > 0:
+                                            success_rate = round((total_successful / total_planned) * 100, 1)
+                                            if success_rate >= 80:
+                                                row[task_name] = f"✅ {success_rate}%"
+                                            elif success_rate >= 50:
+                                                row[task_name] = f"⚠️ {success_rate}%"
+                                            else:
+                                                row[task_name] = f"❌ {success_rate}%"
+                                        else:
+                                            row[task_name] = "❌ No analysis planned"
+                                    else:
+                                        row[task_name] = "No data"
                             
                             code_success_results.append(row)
                         
                         code_success_df = pd.DataFrame(code_success_results)
                         st.dataframe(code_success_df, use_container_width=True, hide_index=True)
-                        st.caption("Shows % of analysis steps that worked without technical errors for each task")
+                        
+                        # Add explanation of the corrected interpretation
+                        with st.expander("🔍 Understanding Code Success Results"):
+                            st.write("**Task 1 (Load Battery Specs)**: Information retrieval from knowledge base")
+                            st.write("• ✅ **Correct**: No code planned (smart task recognition)")
+                            st.write("• ⚠️ **Over-engineered**: Generated unnecessary code but it worked")
+                            st.write("• ❌ **Over-engineered & failed**: Generated unnecessary code that didn't work")
+                            st.write("")
+                            st.write("**Tasks 2 & 3**: Require computational analysis and code generation")
+                            st.write("• ✅ **80%+ success**: Reliable code generation")
+                            st.write("• ⚠️ **50-79% success**: Moderate reliability")
+                            st.write("• ❌ **<50% success**: Poor code generation")
                         
                         # Simple recommendation
                         st.subheader("💡 Bottom Line")
@@ -1184,7 +1218,7 @@ elif st.session_state.experiment_phase in ["ready", "completed"]:
                         with col1:
                             st.write("**Why this model:**")
                             st.write(f"• {winner['User Satisfaction']} user satisfaction")
-                            st.write(f"• {winner['Code Success']} code reliability")
+                            st.write(f"• {winner['Code Success']} code reliability (computational tasks)")
                             st.write(f"• {winner['Avg Speed']} response time")
                         
                         with col2:
@@ -1195,7 +1229,7 @@ elif st.session_state.experiment_phase in ["ready", "completed"]:
                                 st.write("⚠️ Could improve user satisfaction")
                             
                             if winner['Success_Num'] >= 70:
-                                st.write("✅ Code works reliably")
+                                st.write("✅ Code works reliably when needed")
                             else:
                                 st.write("⚠️ Code reliability needs work")
                             
@@ -1213,11 +1247,19 @@ elif st.session_state.experiment_phase in ["ready", "completed"]:
                         
                         # Expected performance based on real-world usage
                         with st.expander("📝 Expected Real-World Performance"):
-                            st.write("**Based on typical usage patterns:**")
-                            st.write("• **Claude**: Best for complex analysis, excellent context handling, very reliable, moderate speed")
-                            st.write("• **GPT-4**: Good balance of capabilities, slower but thorough")  
-                            st.write("• **Gemini**: Fast responses, good for simple tasks, may struggle with complex analysis")
-                            st.caption("Actual results depend on your specific use case and data complexity")
+                            st.write("**Based on experiment results:**")
+                            
+                            # Show actual performance patterns
+                            best_models = results_df.nlargest(3, 'Satisfaction_Num')
+                            for _, model_info in best_models.iterrows():
+                                model_name = model_info['AI Model']
+                                satisfaction = model_info['User Satisfaction']
+                                reliability = model_info['Code Success']
+                                speed = model_info['Avg Speed']
+                                
+                                st.write(f"• **{model_name}**: {satisfaction} satisfaction, {reliability} code success, {speed} avg response")
+                            
+                            st.caption("Note: Results based on standardized tasks with clean data. Real performance may vary with data quality and task complexity.")
                     
                     else:
                         st.warning("No valid data found for analysis")

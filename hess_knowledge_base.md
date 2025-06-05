@@ -1,11 +1,11 @@
-# HESS System ID 19 Analysis Guide
+# HESS System ID 1 Analysis Guide
 
-This document provides comprehensive context for analyzing data from HESS System ID 19, enabling sophisticated analytical reasoning and Python-based analyses using pandas. It supports insightful, research-grounded responses based on validated operational patterns derived from extensive field data (Figgener et al., 2024).
+This document provides comprehensive context for analyzing data from HESS System ID 1, enabling sophisticated analytical reasoning and Python-based analyses using pandas. It supports insightful, research-grounded responses based on validated operational patterns derived from extensive field data (Figgener et al., 2024).
 
 ## 1. System Overview & Experiment Context
-System ID: 19 (Research-Validated Analysis Framework)
+System ID: 1 (Research-Validated Analysis Framework)
 Analysis Goal: To evaluate AI-powered analytical reasoning on HESS operational data using research-validated benchmarks and sophisticated hypothesis-driven analysis.
-Primary Dataset: Represents data from September 2021 (31 days).
+Primary Dataset: Represents data from January 2021 (31 days).
 Data Resolution: 1-second intervals (research-standard for accurate analysis).
 User Location: Germany.
 Electricity Tariff Assumption: Simple Time-of-Use: Peak £0.40/kWh (4 PM-7 PM Mon-Fri), Off-Peak £0.15/kWh (other times). (Use only if query specifically asks about cost).
@@ -26,28 +26,28 @@ Electricity Tariff Assumption: Simple Time-of-Use: Peak £0.40/kWh (4 PM-7 PM Mo
 - Large time gaps (>5 minutes) can affect energy calculations significantly
 - Missing data patterns may indicate system or measurement issues requiring investigation
 
-## 3. Core Battery Specifications (System ID 19 - Research Context)
-Capacity nominal in Ah: 200.0
-Voltage nominal in V: 46.0
-Energy nominal in kWh: 9.2
-Energy usable datasheet in kWh: 7.0
-Cell number in series: 14
-Cell number in parallel: 2
-Cell number: 28
-Inverter nominal power: 3.0 
-Manufacturer: E
-Chemistry: LFP
-Chemistry detail: LFP
-Date storage system installation: 2015-03-23 23:00:00+0000 
-Date measurement system installation: 2015-07-11 00:00:00+0000
-System Age: 78 months
-Capacity test dates: ['2018-02-20 09:54:55', '2019-05-09 09:03:51']
+## 3. Core Battery Specifications (System ID 1 - Research Context)
+Capacity nominal in Ah: 15.0
+Voltage nominal in V: 146.66666666666666
+Energy nominal in kWh: 2.2
+Energy usable datasheet in kWh: 2.0
+Cell number in series: 40
+Cell number in parallel: 1
+Cell number: 40
+Inverter nominal power: 2.0 
+Manufacturer: A
+Chemistry: LMO
+Chemistry detail: LMO/NMC
+Date storage system installation: 2015-03-12 23:00:00+0000 
+Date measurement system installation: 2015-07-10 00:00:00+0000
+System Age: 70 months
+Capacity test dates: ['2017-06-14 14:23:39', '2018-03-06 16:24:35', '2019-07-01 13:55:06', '2022-10-30 15:02:27']
 
 ## 4. Normal Operating Ranges
-### Battery Chemistry: LFP
+### Battery Chemistry: LMO
 
-- **Voltage Range**: 2.5-3.8V per cell (14 cells = 35.0-53.199999999999996V pack)
-- **Characteristics**: Flat voltage curve, stable degradation ~2.0%/year
+- **Voltage Range**: 3.0-4.2V per cell (40 cells = 120.0-168.0V pack)
+- **Characteristics**: Clear end-of-charge at ~4.15V/cell, faster degradation ~3.1%/year
 
 
 ### Temperature Ranges
@@ -56,23 +56,11 @@ Capacity test dates: ['2018-02-20 09:54:55', '2019-05-09 09:03:51']
 - **Critical**: Above 50°C
 
 ### Power & Current (System-Specific)
-- **Max Power**: ~3000.0W (inverter limited)
-- **Max Current**: ~65.2A
-- **Typical C-Rate**: 0.05-0.2C (0.33C max)
-- **Significant Current Threshold**: >4.0A (2% of capacity)
-- **Active Power Threshold**: >30.0W (1% of inverter rating)
-
-## 5. Typical Operational Patterns
-### Daily Cycle (Expected)
-- **Morning (6-10h)**: Discharge for household use
-- **Midday (10-16h)**: Charge from solar (weather dependent)
-- **Evening (16-22h)**: Primary discharge period
-- **Night (22-6h)**: Minimal activity
-
-### Operational States (Research Benchmark)
-- **Idle**: 80-85% of time
-- **Charging**: 8-10% of time
-- **Discharging**: 8-10% of time
+- **Max Power**: ~2000.0W (inverter limited)
+- **Max Current**: ~13.6A
+- **Typical C-Rate**: 0.05-0.2C (0.91C max)
+- **Significant Current Threshold**: >0.3A (2% of capacity)
+- **Active Power Threshold**: >20.0W (1% of inverter rating)
 
 ## 6. Common Analysis Tasks
 
@@ -91,9 +79,9 @@ efficiency = (discharge_energy / charge_energy * 100) if charge_energy > 0 else 
 ### 6.2. Operational State Analysis (Research-Validated Thresholds)
 ```python
 # System-specific thresholds based on capacity
-capacity_ah = 200.0
+capacity_ah = 15.0
 current_threshold = capacity_ah * 0.02  # 2% of capacity (research-validated)
-power_threshold = 30.0  # 1% of inverter power
+power_threshold = 20.0  # 1% of inverter power
 
 # Method 1: Power-based (recommended for energy analysis)
 df['state_power'] = 'idle'
@@ -129,9 +117,9 @@ voltage_stats = {
     'std': df['voltage_volts'].std()
 }
 
-# Check against expected range for LFP
+# Check against expected range for LMO
 
-expected_min, expected_max = 35.0, 53.199999999999996
+expected_min, expected_max = 120.0, 168.0
 
 
 voltage_range_check = {
@@ -172,10 +160,6 @@ data_quality = {
 - Unusual operational state distribution (e.g., <70% idle time)
 - High interpolation rate (>5%)
 
-## 8. Analysis Limitations
-- **30-day data**: Good for operational patterns, limited for degradation assessment
-- **Capacity estimation**: Requires full charge/discharge cycles for accuracy
-- **Seasonal effects**: September data may not represent year-round performance
 
 ## 9. Key Formulas
 - **Energy**: Power × Time (integrate power over time for total energy)

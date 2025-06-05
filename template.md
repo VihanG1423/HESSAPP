@@ -68,18 +68,6 @@ Capacity test dates: {{Capacity_test_dates}}
 - **Significant Current Threshold**: >{{(Capacity_nominal_in_Ah * 0.02)|round(2)}}A (2% of capacity)
 - **Active Power Threshold**: >{{(Inverter_nominal_power * 10)|round(0)}}W (1% of inverter rating)
 
-## 5. Typical Operational Patterns
-### Daily Cycle (Expected)
-- **Morning (6-10h)**: Discharge for household use
-- **Midday (10-16h)**: Charge from solar (weather dependent)
-- **Evening (16-22h)**: Primary discharge period
-- **Night (22-6h)**: Minimal activity
-
-### Operational States (Research Benchmark)
-- **Idle**: 80-85% of time
-- **Charging**: 8-10% of time
-- **Discharging**: 8-10% of time
-
 ## 6. Common Analysis Tasks
 
 ### 6.1. Energy Analysis (Primary Method)
@@ -182,10 +170,6 @@ data_quality = {
 - Unusual operational state distribution (e.g., <70% idle time)
 - High interpolation rate (>5%)
 
-## 8. Analysis Limitations
-- **30-day data**: Good for operational patterns, limited for degradation assessment
-- **Capacity estimation**: Requires full charge/discharge cycles for accuracy
-- **Seasonal effects**: {{month}} data may not represent year-round performance
 
 ## 9. Key Formulas
 - **Energy**: Power × Time (integrate power over time for total energy)
