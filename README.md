@@ -56,6 +56,11 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
+### **Watch the video demonstration::**
+
+[![Watch the Video](https://img.youtube.com/vi/KqFcrxr7D-o/0.jpg)](https://youtu.be/KqFcrxr7D-o)
+
+
 
 
 For questions or issues, check the troubleshooting section or review the code comments for detailed implementation notes.
